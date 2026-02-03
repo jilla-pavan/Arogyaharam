@@ -13,14 +13,16 @@ function App() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [activeSection, setActiveSection] = useState('home')
+  const [showBackToTop, setShowBackToTop] = useState(false)
 
   useEffect(() => {
     const handleScroll = () => {
       try {
         setIsScrolled(window.scrollY > 20)
+        setShowBackToTop(window.scrollY > 500)
         
         // Update active section based on scroll position
-        const sections = ['home', 'menu', 'office', 'about', 'contact']
+        const sections = ['home', 'menu', 'health', 'office', 'about', 'contact']
         const scrollPosition = window.scrollY + 100
         
         for (let i = sections.length - 1; i >= 0; i--) {
@@ -102,6 +104,18 @@ function App() {
 
   return (
     <div className="min-h-screen bg-beige-50">
+      {/* Skip to main content link for accessibility */}
+      <a 
+        href="#home" 
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:bg-primary-600 focus:text-white focus:px-4 focus:py-2 focus:rounded-lg focus:shadow-lg"
+        onClick={(e) => {
+          e.preventDefault()
+          scrollTo('#home')
+        }}
+      >
+        Skip to main content
+      </a>
+
       {/* Navigation */}
       <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled ? 'bg-beige-50/98 backdrop-blur-md shadow-sm border-b border-gray-100' : 'bg-beige-50'
@@ -122,7 +136,7 @@ function App() {
             </button>
             
             <div className="hidden md:flex items-center gap-8">
-              {['home', 'menu', 'office', 'about', 'contact'].map((section) => (
+              {['home', 'menu', 'health', 'office', 'about', 'contact'].map((section) => (
                 <button 
                   key={section}
                   onClick={() => scrollTo(`#${section}`)} 
@@ -130,7 +144,7 @@ function App() {
                     activeSection === section ? 'text-primary-600' : 'text-gray-700 hover:text-primary-600'
                   }`}
                 >
-                  {section === 'home' ? 'Home' : section === 'menu' ? 'Menu' : section === 'office' ? 'Office Plans' : section === 'about' ? 'About' : 'Contact'}
+                  {section === 'home' ? 'Home' : section === 'menu' ? 'Menu' : section === 'health' ? 'Health Card' : section === 'office' ? 'Office Plans' : section === 'about' ? 'About' : 'Contact'}
                   {activeSection === section && (
                     <span className="absolute -bottom-1 left-0 right-0 h-0.5 bg-primary-600 rounded-full"></span>
                   )}
@@ -163,6 +177,7 @@ function App() {
               {[
                 { id: 'home', label: 'Home' },
                 { id: 'menu', label: 'Menu' },
+                { id: 'health', label: 'Health Card' },
                 { id: 'office', label: 'Office Plans' },
                 { id: 'about', label: 'About' },
                 { id: 'contact', label: 'Contact' }
@@ -182,7 +197,7 @@ function App() {
       </nav>
 
       {/* Hero Section */}
-      <section id="home" className="pt-24 pb-16 md:pt-32 md:pb-20 min-h-screen flex items-center" aria-label="Home section">
+      <section id="home" className="pt-24 pb-16 md:pt-32 md:pb-20 min-h-screen flex items-center" aria-label="Home section" role="main">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div className="space-y-8">
@@ -190,11 +205,11 @@ function App() {
                 <div>
                   <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 mb-3 font-telugu leading-[1.1]">
                     ఆరోగ్యహరం
-                  </h1>
+                </h1>
                   <p className="text-xl md:text-2xl text-gray-600 mb-6 font-normal">
-                    Arogyaharam
+                  Arogyaharam
                   </p>
-                </div>
+              </div>
                 <div className="space-y-3">
                   <p className="text-lg md:text-xl text-gray-800 font-telugu leading-relaxed font-medium">
                     శుద్ధమైన ఆహారం • తక్కువ నూనె • అమ్మ చేతి రుచి
@@ -251,7 +266,7 @@ function App() {
                     }}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                </div>
+                      </div>
                 <div className="relative overflow-hidden rounded-2xl shadow-lg group cursor-pointer">
                   <img 
                     src={masalaDosa} 
@@ -263,8 +278,8 @@ function App() {
                     }}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                      </div>
                     </div>
+                  </div>
               <div className="space-y-3 sm:space-y-4 pt-6 sm:pt-8">
                 <div className="relative overflow-hidden rounded-2xl shadow-lg group cursor-pointer">
                   <img 
@@ -277,7 +292,7 @@ function App() {
                     }}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                  </div>
+                </div>
                 <div className="relative overflow-hidden rounded-2xl shadow-lg group cursor-pointer">
                   <img 
                     src={vada} 
@@ -307,7 +322,7 @@ function App() {
               Built on trust, consistency, and traditional values
             </p>
             <div className="w-20 h-1 bg-primary-600 mx-auto mt-4 rounded-full"></div>
-          </div>
+                </div>
 
           <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
             <div className="group relative bg-white rounded-2xl p-6 sm:p-8 shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-primary-200">
@@ -320,7 +335,7 @@ function App() {
               <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
                 Watch your food being prepared fresh. Complete transparency in every step.
               </p>
-            </div>
+          </div>
 
             <div className="group relative bg-white rounded-2xl p-6 sm:p-8 shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-primary-200">
               <div className="w-12 h-12 sm:w-14 sm:h-14 bg-primary-100 rounded-xl flex items-center justify-center mb-4 sm:mb-5 group-hover:bg-primary-200 transition-colors">
@@ -333,19 +348,163 @@ function App() {
               </h3>
               <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
                 Same taste every time. You know what to expect.
-              </p>
-            </div>
+            </p>
+          </div>
 
             <div className="group relative bg-white rounded-2xl p-6 sm:p-8 shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-primary-200">
               <div className="w-12 h-12 sm:w-14 sm:h-14 bg-primary-100 rounded-xl flex items-center justify-center mb-4 sm:mb-5 group-hover:bg-primary-200 transition-colors">
                 <span className="text-xl sm:text-2xl">🌅</span>
-              </div>
+                </div>
               <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2 sm:mb-3 group-hover:text-primary-700 transition-colors">
                 Fresh Daily
               </h3>
               <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
                 No preservatives. No leftovers. Prepared fresh every morning with pure ingredients.
-              </p>
+                </p>
+              </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Health Card Section */}
+      <section id="health" className="py-16 bg-white">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-3">
+              Arogyaharam Health Card
+            </h2>
+            <p className="text-base md:text-lg text-gray-600 max-w-2xl mx-auto">
+              Earn points with every visit and redeem rewards
+            </p>
+            <div className="w-20 h-1 bg-primary-600 mx-auto mt-4 rounded-full"></div>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-8 lg:gap-12 mb-12">
+            {/* Health Card Visual */}
+            <div className="flex items-center justify-center">
+              <div className="bg-gradient-to-br from-primary-600 to-primary-800 rounded-3xl p-8 w-full max-w-md shadow-2xl">
+                <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
+                  <div className="flex items-center justify-between mb-6">
+                    <div>
+                      <div className="text-white/80 text-sm font-medium mb-1">Arogyaharam</div>
+                      <div className="text-white text-2xl font-bold font-telugu">ఆరోగ్యహరం</div>
+                    </div>
+                    <div className="w-14 h-14 bg-white/20 rounded-xl flex items-center justify-center border border-white/30">
+                      <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                      </svg>
+                    </div>
+                  </div>
+                  
+                  <div className="mb-6">
+                    <div className="text-white/60 text-xs font-medium mb-2">Card Number</div>
+                    <div className="text-white text-xl font-mono tracking-wider">ARH • 2026 • 1234</div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4 mb-6">
+                    <div className="bg-white/10 rounded-xl p-4 border border-white/20">
+                      <div className="text-white/60 text-xs mb-1">Visits</div>
+                      <div className="text-white text-2xl font-bold">47</div>
+                    </div>
+                    <div className="bg-white/10 rounded-xl p-4 border border-white/20">
+                      <div className="text-white/60 text-xs mb-1">Points</div>
+                      <div className="text-white text-2xl font-bold">235</div>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-between pt-4 border-t border-white/20">
+                    <div>
+                      <div className="text-white/60 text-xs mb-1">Member Since</div>
+                      <div className="text-white text-sm font-semibold">Jan 2026</div>
+                    </div>
+                    <div className="inline-flex items-center gap-1.5 bg-green-500/30 text-green-100 px-3 py-1.5 rounded-full text-xs font-semibold border border-green-400/30">
+                      <span className="w-2 h-2 bg-green-400 rounded-full"></span>
+                      Active
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Benefits & Info */}
+            <div className="space-y-6">
+              <div className="bg-white rounded-2xl p-6 shadow-md border border-gray-100">
+                <h3 className="text-2xl font-bold text-gray-900 mb-6">Benefits</h3>
+                <div className="space-y-4">
+                  <div className="flex items-start gap-3">
+                    <svg className="w-5 h-5 text-primary-600 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <div>
+                      <h4 className="font-semibold text-gray-900 mb-1">Earn 5 points per visit</h4>
+                      <p className="text-sm text-gray-600">Track your healthy eating journey</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <svg className="w-5 h-5 text-primary-600 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <div>
+                      <h4 className="font-semibold text-gray-900 mb-1">Redeem for rewards</h4>
+                      <p className="text-sm text-gray-600">50 points = Free breakfast (₹60)</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <svg className="w-5 h-5 text-primary-600 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <div>
+                      <h4 className="font-semibold text-gray-900 mb-1">Priority service</h4>
+                      <p className="text-sm text-gray-600">Faster service during peak hours</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white rounded-2xl p-6 shadow-md border border-gray-100">
+                <h3 className="text-xl font-bold text-gray-900 mb-4">How It Works</h3>
+                <div className="space-y-3">
+                  <div className="flex items-start gap-3">
+                    <span className="flex-shrink-0 w-6 h-6 bg-primary-600 text-white rounded-full flex items-center justify-center text-xs font-bold">1</span>
+                    <span className="text-sm text-gray-700">Visit our centre and request a Health Card (free)</span>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <span className="flex-shrink-0 w-6 h-6 bg-primary-600 text-white rounded-full flex items-center justify-center text-xs font-bold">2</span>
+                    <span className="text-sm text-gray-700">Present your card on every visit to earn points</span>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <span className="flex-shrink-0 w-6 h-6 bg-primary-600 text-white rounded-full flex items-center justify-center text-xs font-bold">3</span>
+                    <span className="text-sm text-gray-700">Redeem points for free breakfasts and discounts</span>
+                  </div>
+                </div>
+              </div>
+
+              <a 
+                href={`https://wa.me/${whatsappNumber}?text=Hi, I'm interested in getting an Arogyaharam Health Card`}
+                className="block w-full bg-primary-600 text-white px-8 py-4 rounded-xl text-center font-bold hover:bg-primary-700 transition-all shadow-lg hover:shadow-xl text-base"
+              >
+                Get Your Health Card
+              </a>
+            </div>
+          </div>
+
+          {/* Points System */}
+          <div className="bg-beige-50 rounded-3xl p-8 border border-gray-200">
+            <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">Points System</h3>
+            <div className="grid sm:grid-cols-3 gap-6">
+              <div className="bg-white rounded-2xl p-6 text-center shadow-sm border border-gray-100">
+                <div className="text-3xl font-bold text-primary-600 mb-2">5</div>
+                <div className="text-sm text-gray-600 font-medium">Points per visit</div>
+              </div>
+              <div className="bg-primary-600 rounded-2xl p-6 text-center shadow-lg text-white">
+                <div className="text-3xl font-bold mb-2">50</div>
+                <div className="text-sm font-medium">Points = Free breakfast</div>
+                <div className="text-xs text-primary-100 mt-1">Worth ₹60</div>
+              </div>
+              <div className="bg-white rounded-2xl p-6 text-center shadow-sm border border-gray-100">
+                <div className="text-3xl font-bold text-primary-600 mb-2">100</div>
+                <div className="text-sm text-gray-600 font-medium">Points = 10% off monthly</div>
+              </div>
             </div>
           </div>
         </div>
@@ -380,8 +539,8 @@ function App() {
                 {menuItems.morning.map((item, i) => (
                   <div key={`morning-${i}`} className="bg-white rounded-2xl shadow-md border border-gray-100 overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1 group">
                     <div className="h-48 sm:h-56 overflow-hidden relative">
-                      <img 
-                        src={item.image} 
+                  <img 
+                    src={item.image} 
                         alt={`${item.name} - ${item.nameTelugu}`} 
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
                         loading="lazy"
@@ -391,17 +550,17 @@ function App() {
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
                       <div className="absolute top-4 right-4 bg-primary-600 text-white px-4 py-2 rounded-lg text-base font-bold shadow-lg">
-                        {item.price}
-                      </div>
-                    </div>
+                    {item.price}
+                  </div>
+                </div>
                     <div className="p-5">
                       <h3 className="text-xl font-bold text-gray-900 mb-1.5 group-hover:text-primary-700 transition-colors">
                     {item.name}
                   </h3>
                       <p className="text-sm text-gray-600 font-telugu font-medium">{item.nameTelugu}</p>
-                    </div>
-                  </div>
-                ))}
+                </div>
+              </div>
+            ))}
               </div>
             </div>
 
@@ -452,70 +611,464 @@ function App() {
         </div>
       </section>
 
-      {/* Office / Bulk Orders Section */}
+      {/* Delivery Plans Section */}
       <section id="office" className="py-16 bg-beige-50">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-3">Office / College Breakfast Plans</h1>
-            <p className="text-base md:text-lg text-gray-600 max-w-3xl mx-auto">Reliable, consistent, hygienic breakfast delivery for your team. Start your day right with traditional South Indian breakfast.</p>
+            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-3">Home Delivery & Institutional Plans</h1>
+            <p className="text-base md:text-lg text-gray-600 max-w-3xl mx-auto">Fresh breakfast delivered to your doorstep or institution. Perfect for individuals, families, students, and organizations.</p>
             <div className="w-24 h-1.5 bg-primary-600 mx-auto mt-4 rounded-full"></div>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-6 md:gap-8 mb-8">
-            {/* Pricing Card */}
-            <div className="bg-gradient-to-br from-primary-600 to-primary-700 rounded-3xl shadow-2xl p-6 sm:p-8 text-white">
-              <div className="text-center mb-6">
-                <div className="inline-block bg-white/20 rounded-full px-4 py-2 mb-4">
-                  <span className="text-sm font-semibold">Best Value</span>
-                </div>
-                <div className="flex items-baseline justify-center gap-2 mb-2">
-                  <span className="text-4xl md:text-5xl font-bold">₹60</span>
-                  <span className="text-lg text-primary-100">/person/day</span>
-                </div>
-                <p className="text-primary-100 text-base mb-6">Same menu</p>
+          {/* Individual Plans Section */}
+          <div className="mb-16">
+            <div className="text-center mb-8">
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">Individual Plans</h2>
+              <p className="text-gray-600 text-base mb-3">Perfect for home delivery - individuals, families, students, and office employees</p>
+              <div className="inline-flex items-center gap-2 bg-primary-100 text-primary-700 px-4 py-2 rounded-full text-sm font-semibold">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                <span>Home delivery available within 2-3 kms radius</span>
+              </div>
             </div>
 
-              <div className="bg-white/10 rounded-2xl p-6 mb-6 backdrop-blur-sm">
-                <div className="space-y-3">
-                  <div className="flex items-center gap-3">
-                    <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                    <span className="text-base">Fresh prepared daily</span>
-                </div>
-                  <div className="flex items-center gap-3">
-                    <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    <span className="text-base">Hygienic packing</span>
+            <div className="grid md:grid-cols-3 gap-6 mb-8">
+              {/* Single Person Daily */}
+              <div className="bg-white rounded-3xl shadow-lg p-6 sm:p-8 border-2 border-gray-200 hover:border-primary-300 transition-all">
+                <div className="text-center mb-6">
+                  <div className="inline-block bg-gray-100 rounded-full px-4 py-2 mb-4">
+                    <span className="text-sm font-semibold text-gray-700">Single Person</span>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="flex items-baseline justify-center gap-2 mb-2">
+                    <span className="text-4xl md:text-5xl font-bold text-gray-900">₹60</span>
+                    <span className="text-lg text-gray-600">/day</span>
+                  </div>
+                  <p className="text-gray-600 text-sm mb-2">Daily home delivery</p>
+                  <div className="text-xs text-gray-500">Within 2-3 kms • Order as needed</div>
+                </div>
+
+                <div className="bg-beige-50 rounded-2xl p-5 mb-6">
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-3">
+                      <svg className="w-5 h-5 flex-shrink-0 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                      <span className="text-sm text-gray-700">Fresh prepared daily</span>
+                </div>
+                    <div className="flex items-center gap-3">
+                      <svg className="w-5 h-5 flex-shrink-0 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                      <span className="text-sm text-gray-700">Home delivery included</span>
+                </div>
+                    <div className="flex items-center gap-3">
+                      <svg className="w-5 h-5 flex-shrink-0 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                      <span className="text-sm text-gray-700">Flexible ordering</span>
+              </div>
+                    <div className="flex items-center gap-3">
+                      <svg className="w-5 h-5 flex-shrink-0 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      <span className="text-sm text-gray-700">Same menu</span>
+              </div>
+                  </div>
+            </div>
+
+                <a 
+                  href={`https://wa.me/${whatsappNumber}?text=Hi, I'm interested in single person daily home delivery plan`}
+                  className="block w-full bg-primary-600 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl text-center font-bold hover:bg-primary-700 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 text-sm sm:text-base"
+                >
+                  Order Now
+                </a>
+                </div>
+
+              {/* Single Person Monthly */}
+              <div className="bg-gradient-to-br from-primary-600 to-primary-700 rounded-3xl shadow-2xl p-6 sm:p-8 text-white relative overflow-hidden">
+                <div className="absolute top-0 right-0 bg-white/20 rounded-bl-full px-4 py-2">
+                  <span className="text-xs font-bold">BEST VALUE</span>
+                </div>
+                
+                <div className="text-center mb-6 mt-4">
+                  <div className="inline-block bg-white/20 rounded-full px-4 py-2 mb-4">
+                    <span className="text-sm font-semibold">Single Person</span>
+                  </div>
+                  <div className="flex flex-col items-center gap-2 mb-3">
+                    <div className="flex items-baseline justify-center gap-2">
+                      <span className="text-4xl md:text-5xl font-bold">₹1,287</span>
+                    </div>
+                    <span className="text-lg text-primary-100">/month</span>
+                    <div className="text-sm text-primary-200 mt-2">
+                      <span className="line-through opacity-70">₹1,430</span>
+                      <span className="ml-2 font-semibold">Save ₹143/month</span>
+                    </div>
+                    <p className="text-primary-100 text-xs mt-1">₹55/day × 26 days (10% discount)</p>
+                  </div>
+                </div>
+
+                <div className="bg-white/10 rounded-2xl p-5 mb-6 backdrop-blur-sm">
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-3">
+                      <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                      <span className="text-sm">All daily plan benefits</span>
+                </div>
+                    <div className="flex items-center gap-3">
+                      <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
-                    <span className="text-base">Minimum 30 people</span>
+                      <span className="text-sm">10% discount</span>
+                  </div>
+                    <div className="flex items-center gap-3">
+                      <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                      <span className="text-sm">6 days/week (Mon-Sat)</span>
+                  </div>
+                    <div className="flex items-center gap-3">
+                      <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                      <span className="text-sm">Fixed delivery time</span>
                   </div>
                 </div>
               </div>
 
-              <a 
-                href={`https://wa.me/${whatsappNumber}?text=Hi, I'm interested in office breakfast contract for our team`}
-                className="block w-full bg-white text-primary-600 px-6 sm:px-8 py-3 sm:py-4 rounded-xl text-center font-bold hover:bg-primary-50 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 text-sm sm:text-base"
-              >
-                Get Started Today
-              </a>
+                <a 
+                  href={`https://wa.me/${whatsappNumber}?text=Hi, I'm interested in single person monthly home delivery subscription`}
+                  className="block w-full bg-white text-primary-600 px-6 sm:px-8 py-3 sm:py-4 rounded-xl text-center font-bold hover:bg-primary-50 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 text-sm sm:text-base"
+                >
+                  Subscribe Monthly
+                </a>
             </div>
 
-            {/* Benefits Card */}
-            <div className="bg-white rounded-3xl shadow-xl p-6 sm:p-8 border border-gray-100">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-4 sm:mb-6">Why Choose Our Plans?</h2>
+              {/* Family/Group Plan */}
+              <div className="bg-white rounded-3xl shadow-lg p-6 sm:p-8 border-2 border-primary-200 hover:border-primary-400 transition-all">
+                <div className="text-center mb-6">
+                  <div className="inline-block bg-primary-100 rounded-full px-4 py-2 mb-4">
+                    <span className="text-sm font-semibold text-primary-700">Family/Group</span>
+          </div>
+                  <div className="flex items-baseline justify-center gap-2 mb-2">
+                    <span className="text-4xl md:text-5xl font-bold text-gray-900">₹50</span>
+                    <span className="text-lg text-gray-600">/person/day</span>
+        </div>
+                  <p className="text-gray-600 text-sm mb-2">2-5 people at same address</p>
+                  <div className="text-xs text-gray-500">Within 2-3 kms • Daily or Monthly</div>
+                </div>
+
+                <div className="bg-beige-50 rounded-2xl p-5 mb-6">
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-3">
+                      <svg className="w-5 h-5 flex-shrink-0 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      <span className="text-sm text-gray-700">Reduced per-person rate</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <svg className="w-5 h-5 flex-shrink-0 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      <span className="text-sm text-gray-700">Single delivery location</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <svg className="w-5 h-5 flex-shrink-0 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      <span className="text-sm text-gray-700">Monthly: ₹1,170/person (10% off)</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <svg className="w-5 h-5 flex-shrink-0 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      <span className="text-sm text-gray-700">Perfect for families/roommates</span>
+                    </div>
+                  </div>
+          </div>
+
+                <a 
+                  href={`https://wa.me/${whatsappNumber}?text=Hi, I'm interested in family/group home delivery plan (2-5 people)`}
+                  className="block w-full bg-primary-600 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl text-center font-bold hover:bg-primary-700 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 text-sm sm:text-base"
+                >
+                  Get Started
+                </a>
+              </div>
+            </div>
+          </div>
+
+          {/* Student Institutional Plans Section */}
+          <div className="mb-12">
+            <div className="text-center mb-8">
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">Student Institutional Plans</h2>
+              <p className="text-gray-600 text-base">Special pricing for schools and colleges (Minimum 30 students)</p>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-6 md:gap-8 mb-12">
+              {/* Student Daily Plan */}
+              <div className="bg-white rounded-3xl shadow-xl p-6 sm:p-8 border-2 border-primary-200 hover:border-primary-400 transition-all">
+                <div className="text-center mb-6">
+                  <div className="inline-block bg-primary-100 rounded-full px-4 py-2 mb-4">
+                    <span className="text-sm font-semibold text-primary-700">Student Daily Plan</span>
+                  </div>
+                  <div className="flex items-baseline justify-center gap-2 mb-2">
+                    <span className="text-4xl md:text-5xl font-bold text-gray-900">₹55</span>
+                    <span className="text-lg text-gray-600">/student/day</span>
+                  </div>
+                  <p className="text-gray-600 text-sm mb-4">Pay as you go</p>
+                  <div className="text-xs text-gray-500">Minimum 30 students</div>
+                </div>
+
+                <div className="bg-beige-50 rounded-2xl p-5 mb-6">
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-3">
+                      <svg className="w-5 h-5 flex-shrink-0 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                      <span className="text-sm text-gray-700">Fresh prepared daily</span>
+                  </div>
+                    <div className="flex items-center gap-3">
+                      <svg className="w-5 h-5 flex-shrink-0 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      <span className="text-sm text-gray-700">Hygienic packing</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <svg className="w-5 h-5 flex-shrink-0 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      <span className="text-sm text-gray-700">Same menu</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <svg className="w-5 h-5 flex-shrink-0 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      <span className="text-sm text-gray-700">Delivery before 8:00 AM</span>
+                    </div>
+                  </div>
+                </div>
+                
+                <a 
+                  href={`https://wa.me/${whatsappNumber}?text=Hi, I'm interested in student institutional daily breakfast plan (minimum 30 students)`}
+                  className="block w-full bg-primary-600 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl text-center font-bold hover:bg-primary-700 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 text-sm sm:text-base"
+                >
+                  Get Started
+                </a>
+              </div>
+
+              {/* Student Monthly Subscription */}
+              <div className="bg-gradient-to-br from-primary-600 to-primary-700 rounded-3xl shadow-2xl p-6 sm:p-8 text-white relative overflow-hidden">
+                <div className="absolute top-0 right-0 bg-white/20 rounded-bl-full px-6 py-2">
+                  <span className="text-xs font-bold">BEST VALUE</span>
+                </div>
+                
+                <div className="text-center mb-6 mt-4">
+                  <div className="inline-block bg-white/20 rounded-full px-4 py-2 mb-4">
+                    <span className="text-sm font-semibold">Student Monthly</span>
+                  </div>
+                  <div className="flex flex-col items-center gap-2 mb-3">
+                    <div className="flex items-baseline justify-center gap-2">
+                      <span className="text-4xl md:text-5xl font-bold">₹39,000</span>
+                    </div>
+                    <span className="text-lg text-primary-100">/month for 30 students</span>
+                    <div className="text-sm text-primary-200 mt-2">
+                      <span className="line-through opacity-70">₹42,900</span>
+                      <span className="ml-2 font-semibold">Save ₹3,900/month</span>
+                    </div>
+                    <p className="text-primary-100 text-xs mt-1">₹50/student/day × 26 days (10% discount)</p>
+                  </div>
+                </div>
+
+                <div className="bg-white/10 rounded-2xl p-5 mb-6 backdrop-blur-sm">
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-3">
+                      <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                      <span className="text-sm">All daily plan benefits</span>
+                  </div>
+                    <div className="flex items-center gap-3">
+                      <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      <span className="text-sm">10% discount on monthly commitment</span>
+                </div>
+                    <div className="flex items-center gap-3">
+                      <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      <span className="text-sm">Priority support & scheduling</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      <span className="text-sm">Monthly invoice & payment</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      <span className="text-sm">6 days/week (Mon-Sat)</span>
+                    </div>
+              </div>
+            </div>
+
+                <a 
+                  href={`https://wa.me/${whatsappNumber}?text=Hi, I'm interested in student institutional monthly breakfast subscription (30+ students)`}
+                  className="block w-full bg-white text-primary-600 px-6 sm:px-8 py-3 sm:py-4 rounded-xl text-center font-bold hover:bg-primary-50 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 text-sm sm:text-base"
+                >
+                  Subscribe Monthly
+                </a>
+              </div>
+            </div>
+          </div>
+
+          {/* Regular Institutional Plans Section */}
+          <div className="mb-12">
+            <div className="text-center mb-8">
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">Office & Organization Plans</h2>
+              <p className="text-gray-600 text-base">For offices and organizations (Minimum 30 people)</p>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-6 md:gap-8 mb-8">
+              {/* Institutional Daily Plan */}
+              <div className="bg-white rounded-3xl shadow-xl p-6 sm:p-8 border-2 border-gray-200 hover:border-primary-300 transition-all">
+                <div className="text-center mb-6">
+                  <div className="inline-block bg-gray-100 rounded-full px-4 py-2 mb-4">
+                    <span className="text-sm font-semibold text-gray-700">Daily Plan</span>
+                  </div>
+                  <div className="flex items-baseline justify-center gap-2 mb-2">
+                    <span className="text-4xl md:text-5xl font-bold text-gray-900">₹60</span>
+                    <span className="text-lg text-gray-600">/person/day</span>
+                  </div>
+                  <p className="text-gray-600 text-sm mb-4">Pay as you go</p>
+                  <div className="text-xs text-gray-500">Minimum 30 people</div>
+                </div>
+
+                <div className="bg-beige-50 rounded-2xl p-5 mb-6">
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-3">
+                      <svg className="w-5 h-5 flex-shrink-0 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+                      <span className="text-sm text-gray-700">Fresh prepared daily</span>
+                  </div>
+                    <div className="flex items-center gap-3">
+                      <svg className="w-5 h-5 flex-shrink-0 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      <span className="text-sm text-gray-700">Hygienic packing</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <svg className="w-5 h-5 flex-shrink-0 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      <span className="text-sm text-gray-700">Same menu</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <svg className="w-5 h-5 flex-shrink-0 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      <span className="text-sm text-gray-700">Flexible - order as needed</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <svg className="w-5 h-5 flex-shrink-0 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      <span className="text-sm text-gray-700">Delivery before 8:00 AM</span>
+                    </div>
+                  </div>
+                </div>
+                
+                <a 
+                  href={`https://wa.me/${whatsappNumber}?text=Hi, I'm interested in institutional daily breakfast plan (minimum 30 people)`}
+                  className="block w-full bg-primary-600 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl text-center font-bold hover:bg-primary-700 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 text-sm sm:text-base"
+                >
+                  Get Started
+                </a>
+              </div>
+
+              {/* Institutional Monthly Subscription */}
+              <div className="bg-gradient-to-br from-primary-600 to-primary-700 rounded-3xl shadow-2xl p-6 sm:p-8 text-white relative overflow-hidden">
+                <div className="absolute top-0 right-0 bg-white/20 rounded-bl-full px-6 py-2">
+                  <span className="text-xs font-bold">BEST VALUE</span>
+                </div>
+                
+                <div className="text-center mb-6 mt-4">
+                  <div className="inline-block bg-white/20 rounded-full px-4 py-2 mb-4">
+                    <span className="text-sm font-semibold">Monthly Subscription</span>
+                  </div>
+                  <div className="flex flex-col items-center gap-2 mb-3">
+                    <div className="flex items-baseline justify-center gap-2">
+                      <span className="text-4xl md:text-5xl font-bold">₹42,000</span>
+                    </div>
+                    <span className="text-lg text-primary-100">/month for 30 people</span>
+                    <div className="text-sm text-primary-200 mt-2">
+                      <span className="line-through opacity-70">₹46,800</span>
+                      <span className="ml-2 font-semibold">Save ₹4,800/month</span>
+                    </div>
+                    <p className="text-primary-100 text-xs mt-1">₹1,400/person/month (26 days)</p>
+                  </div>
+                </div>
+
+                <div className="bg-white/10 rounded-2xl p-5 mb-6 backdrop-blur-sm">
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-3">
+                      <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                      <span className="text-sm">All daily plan benefits</span>
+                  </div>
+                    <div className="flex items-center gap-3">
+                      <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      <span className="text-sm">10% discount on monthly commitment</span>
+                </div>
+                    <div className="flex items-center gap-3">
+                      <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      <span className="text-sm">Priority support & scheduling</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      <span className="text-sm">Monthly invoice & payment</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      <span className="text-sm">6 days/week (Mon-Sat)</span>
+                    </div>
+              </div>
+            </div>
+
+                <a 
+                  href={`https://wa.me/${whatsappNumber}?text=Hi, I'm interested in institutional monthly breakfast subscription (30+ people)`}
+                  className="block w-full bg-white text-primary-600 px-6 sm:px-8 py-3 sm:py-4 rounded-xl text-center font-bold hover:bg-primary-50 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 text-sm sm:text-base"
+                >
+                  Subscribe Monthly
+                </a>
+              </div>
+            </div>
+          </div>
+
+          {/* Benefits Section */}
+          <div className="bg-white rounded-3xl shadow-xl p-6 sm:p-8 border border-gray-100 mb-8">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-4 sm:mb-6 text-center">Why Choose Our Delivery Service?</h2>
               
               <div className="space-y-4 sm:space-y-5">
                 <div className="flex items-start gap-3 sm:gap-4 p-4 sm:p-5 rounded-2xl bg-beige-50 hover:bg-primary-50 transition-all group">
                   <div className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 bg-primary-100 rounded-xl flex items-center justify-center group-hover:bg-primary-200 group-hover:scale-110 transition-all">
                     <svg className="w-5 h-5 sm:w-6 sm:h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
+                </svg>
                   </div>
                   <div className="flex-1">
                     <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-1 sm:mb-2">Fixed Timing</h3>
@@ -555,46 +1108,12 @@ function App() {
                   </div>
                   <div className="flex-1">
                     <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-1 sm:mb-2">Bulk Orders</h3>
-                    <p className="text-sm sm:text-base text-gray-600">Minimum 30 people per day. Perfect for offices, colleges, and institutions looking for reliable breakfast service.</p>
+                    <p className="text-sm sm:text-base text-gray-600">Perfect for institutions (minimum 30 people). Individual plans available for home delivery - perfect for students, employees, and families.</p>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          {/* Additional Info */}
-          <div className="bg-white rounded-3xl shadow-lg p-6 sm:p-8 border border-gray-100">
-            <div className="grid sm:grid-cols-3 gap-4 sm:gap-6 mb-6">
-              <div className="text-center p-4 sm:p-6 bg-beige-50 rounded-2xl">
-                <div className="text-3xl sm:text-4xl font-bold text-primary-600 mb-2">30+</div>
-                <div className="text-sm sm:text-base text-gray-700 font-semibold">Minimum People</div>
-              </div>
-              <div className="text-center p-4 sm:p-6 bg-beige-50 rounded-2xl">
-                <div className="text-3xl sm:text-4xl font-bold text-primary-600 mb-2">8:00 AM</div>
-                <div className="text-sm sm:text-base text-gray-700 font-semibold">Delivery Time</div>
-              </div>
-              <div className="text-center p-4 sm:p-6 bg-beige-50 rounded-2xl">
-                <div className="text-3xl sm:text-4xl font-bold text-primary-600 mb-2">Daily</div>
-                <div className="text-sm sm:text-base text-gray-700 font-semibold">Service</div>
-              </div>
-            </div>
-
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-              <a 
-                href={`https://wa.me/${whatsappNumber}?text=Hi, I'm interested in office breakfast contract. Please share more details.`}
-                className="flex-1 bg-green-600 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl text-center font-semibold hover:bg-green-700 transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-3 text-sm sm:text-base transform hover:-translate-y-0.5"
-              >
-                <WhatsAppIcon />
-                WhatsApp Us
-              </a>
-              <a 
-                href={`tel:${phoneNumber}`}
-                className="flex-1 bg-primary-600 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl text-center font-semibold hover:bg-primary-700 transition-all shadow-lg hover:shadow-xl text-sm sm:text-base transform hover:-translate-y-0.5"
-              >
-                Call Us Now
-              </a>
-            </div>
-          </div>
         </div>
       </section>
 
@@ -625,7 +1144,7 @@ function App() {
                 <div className="w-14 h-14 bg-primary-100 rounded-2xl flex items-center justify-center">
                   <svg className="w-8 h-8 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                  </svg>
+                </svg>
                 </div>
                 <h2 className="text-3xl md:text-4xl font-bold text-gray-900">Our Story</h2>
               </div>
@@ -793,14 +1312,14 @@ function App() {
                   <div className="flex items-center gap-4">
                     <div className="w-12 h-12 bg-primary-100 rounded-xl flex items-center justify-center">
                       <span className="text-2xl">🌙</span>
-                </div>
-      <div>
+                    </div>
+                    <div>
                       <p className="text-base font-bold text-gray-900">Evening</p>
                       <p className="text-sm text-gray-600">6:00 PM - 9:30 PM</p>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
 
               <div className="bg-white rounded-3xl p-6 shadow-md border border-gray-100">
                 <h2 className="text-2xl font-bold text-gray-900 mb-4">Get in Touch</h2>
@@ -809,11 +1328,11 @@ function App() {
                     href={`tel:${phoneNumber}`}
                     className="block bg-primary-600 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl text-center font-semibold hover:bg-primary-700 transition-all shadow-lg hover:shadow-xl text-sm sm:text-base transform hover:-translate-y-0.5"
                   >
-                    Call Us
-                  </a>
-                  <a 
+                Call Us
+              </a>
+              <a 
                     href={`https://wa.me/${whatsappNumber}`}
-                    className="bg-green-600 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl text-center font-semibold hover:bg-green-700 transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-3 text-sm sm:text-base transform hover:-translate-y-0.5"
+                    className="block bg-green-600 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl text-center font-semibold hover:bg-green-700 transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-3 text-sm sm:text-base transform hover:-translate-y-0.5"
                   >
                     <WhatsAppIcon />
                     WhatsApp
@@ -822,7 +1341,7 @@ function App() {
                     href="https://g.page/r/YOUR_GOOGLE_BUSINESS_REVIEW_LINK"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="bg-yellow-500 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl text-center font-semibold hover:bg-yellow-600 transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-3 text-sm sm:text-base transform hover:-translate-y-0.5"
+                    className="block bg-yellow-500 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl text-center font-semibold hover:bg-yellow-600 transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-3 text-sm sm:text-base transform hover:-translate-y-0.5"
                     aria-label="Leave us a review on Google"
                   >
                     <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -867,7 +1386,7 @@ function App() {
               <div className="flex items-center gap-3 mb-4">
                 <div className="h-12 w-12 sm:h-14 sm:w-14 rounded-xl bg-white p-1.5 flex items-center justify-center border border-white/30 shadow-lg">
                   <img src={logo} alt="Arogyaharam Logo" className="h-full w-full object-contain" />
-                </div>
+                  </div>
                 <div>
                   <div className="text-base sm:text-lg font-bold font-telugu text-white">ఆరోగ్యహరం</div>
                   <div className="text-xs text-gray-400">Arogyaharam</div>
@@ -875,14 +1394,15 @@ function App() {
               </div>
               <p className="text-gray-400 text-xs sm:text-sm leading-relaxed">
                 Traditional South Indian tiffin centre serving authentic breakfast with trust and consistency.
-              </p>
-            </div>
+        </p>
+      </div>
             <div>
               <h4 className="font-bold text-sm sm:text-base mb-3 sm:mb-4">Quick Links</h4>
               <ul className="space-y-1.5 sm:space-y-2 text-gray-400">
                 {[
                   { id: 'home', label: 'Home' },
                   { id: 'menu', label: 'Menu' },
+                  { id: 'health', label: 'Health Card' },
                   { id: 'office', label: 'Office Plans' },
                   { id: 'about', label: 'About' },
                   { id: 'contact', label: 'Contact' }
@@ -890,8 +1410,8 @@ function App() {
                   <li key={item.id}>
                     <button onClick={() => scrollTo(`#${item.id}`)} className="hover:text-white transition-colors text-xs sm:text-sm">
                       {item.label}
-                    </button>
-                  </li>
+                  </button>
+                </li>
                 ))}
               </ul>
             </div>
@@ -931,6 +1451,19 @@ function App() {
       >
         <WhatsAppIcon />
       </a>
+
+      {/* Back to Top Button */}
+      {showBackToTop && (
+        <button
+          onClick={() => scrollTo('#home')}
+          className="fixed bottom-6 right-6 md:bottom-8 md:right-8 bg-primary-600 text-white p-4 rounded-full shadow-2xl hover:bg-primary-700 transition-all hover:scale-110 z-40 md:block hidden"
+          aria-label="Back to top"
+        >
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
+          </svg>
+        </button>
+      )}
     </div>
   )
 }
